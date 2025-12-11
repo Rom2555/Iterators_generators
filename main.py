@@ -9,14 +9,16 @@ class FlatIterator:
         return self
 
     def __next__(self):
-        if self.inner_index >= len(self.list_of_list[self.outer_index]):
-            self.inner_index = 0
-            self.outer_index += 1
-            if self.outer_index >= len(self.list_of_list):
-                raise StopIteration
-        item = self.list_of_list[self.outer_index][self.inner_index]
-        self.inner_index += 1
-        return item
+        while self.outer_index < len(self.list_of_list):
+            if self.inner_index < len(self.list_of_list[self.outer_index]):
+                item = self.list_of_list[self.outer_index][self.inner_index]
+                self.inner_index += 1
+                return item
+            else:
+                self.outer_index += 1
+                self.inner_index = 0
+        raise StopIteration
+
 
 
 def test_1():
