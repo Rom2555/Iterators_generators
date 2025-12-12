@@ -24,9 +24,10 @@ class FlatIterator:
 
 
 def flat_generator(list_of_lists):
-    for i in range(len(list_of_lists)):
-        for j in range(len(list_of_lists[i])):
-            yield list_of_lists[i][j]
+    for sublist in list_of_lists:
+        if isinstance(sublist, list):
+            for item in sublist:
+                yield item
 
 
 def test_1():
