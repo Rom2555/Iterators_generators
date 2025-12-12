@@ -30,6 +30,15 @@ def flat_generator(list_of_lists):
                 yield item
 
 
+def flat_recursive_generator(list_of_list):
+    for item in list_of_list:
+        if isinstance(item, list):
+            yield from flat_recursive_generator(item)
+        else:
+            yield item
+
+
+# тесты
 def test_1():
     list_of_lists_1 = [["a", "b", "c"], ["d", "e", "f", "h", False], [1, 2, None]]
 
@@ -82,6 +91,38 @@ def test_2():
     print("Test 2 OK!")
 
 
+def test_3():
+    list_of_lists_2 = [
+        [["a"], ["b", "c"]],
+        ["d", "e", [["f"], "h"], False],
+        [1, 2, None, [[[[["!"]]]]], []],
+    ]
+
+    for flat_iterator_item, check_item in zip(
+            flat_recursive_generator(list_of_lists_2),
+            ["a", "b", "c", "d", "e", "f", "h", False, 1, 2, None, "!"],
+    ):
+        assert flat_iterator_item == check_item
+
+    assert list(flat_recursive_generator(list_of_lists_2)) == [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "h",
+        False,
+        1,
+        2,
+        None,
+        "!",
+    ]
+    assert isinstance(flat_recursive_generator(list_of_lists_2), types.GeneratorType)
+    print("Test 3 OK!")
+
+
 if __name__ == "__main__":
     test_1()
     test_2()
+    test_3()
