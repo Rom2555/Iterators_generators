@@ -2,16 +2,20 @@ import types
 
 
 class FlatIterator:
+    """Итератор, проходящий по вложенным спискам (уровень вложенности 2)."""
 
     def __init__(self, list_of_list):
+        """Инициализация итератора для списка списков."""
         self.list_of_list = list_of_list
         self.outer_index = 0
         self.inner_index = 0
 
     def __iter__(self):
+        """Возвращает себя как итератор."""
         return self
 
     def __next__(self):
+        """Возвращает следующий элемент из вложенных списков."""
         while self.outer_index < len(self.list_of_list):
             if self.inner_index < len(self.list_of_list[self.outer_index]):
                 item = self.list_of_list[self.outer_index][self.inner_index]
@@ -24,6 +28,7 @@ class FlatIterator:
 
 
 def flat_generator(list_of_lists):
+    """Генератор для прохода по списку списков (уровень вложенности 2)."""
     for sublist in list_of_lists:
         if isinstance(sublist, list):
             for item in sublist:
@@ -31,6 +36,7 @@ def flat_generator(list_of_lists):
 
 
 def flat_recursive_generator(list_of_list):
+    """Рекурсивный генератор, обрабатывающий списки любой вложенности."""
     for item in list_of_list:
         if isinstance(item, list):
             yield from flat_recursive_generator(item)
@@ -40,6 +46,7 @@ def flat_recursive_generator(list_of_list):
 
 # тесты
 def test_1():
+    """Тест для FlatIterator: проверка итерации и полного результата."""
     list_of_lists_1 = [["a", "b", "c"], ["d", "e", "f", "h", False], [1, 2, None]]
 
     for flat_iterator_item, check_item in zip(
@@ -65,6 +72,7 @@ def test_1():
 
 
 def test_2():
+    """Тест для flat_generator: проверка работы генератора и типа."""
     list_of_lists_1 = [["a", "b", "c"], ["d", "e", "f", "h", False], [1, 2, None]]
 
     for flat_iterator_item, check_item in zip(
@@ -92,6 +100,7 @@ def test_2():
 
 
 def test_3():
+    """Тест для flat_recursive_generator: проверка рекурсивного генератора."""
     list_of_lists_2 = [
         [["a"], ["b", "c"]],
         ["d", "e", [["f"], "h"], False],
